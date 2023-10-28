@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  word-break: break-word;
+}
+
+.app-container * {
+  font-family: inherit !important;
+}
+
+body {
+  font-family: 'Figtree', sans-serif;
+}
+
+.rotate-animation {
+  transform: rotate(-360deg);
+  transition: transform 1s ease-in-out !important;
+}
