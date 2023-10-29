@@ -1,3 +1,4 @@
+import { CmmsTypeObject } from '@/utils/DataTypes';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Paper,
@@ -51,9 +52,12 @@ export default function CMMSDetailsModal({
   setCMMSDetailsModalNo,
 }: {
   open: boolean;
-  data: any;
+  data: CmmsTypeObject | '';
   setCMMSDetailsModalNo: (prNo: string | null) => void;
 }) {
+
+  console.log('data',data)
+
   const handleClose = () => {
     setCMMSDetailsModalNo(null);
   };
@@ -229,90 +233,92 @@ export default function CMMSDetailsModal({
               </TableHead>
               <TableBody className=' !tw-text-black'>
                 {dataToShow.map((row: any) => (
-                  <StyledTableRow key={row.item_master}>
+                  <StyledTableRow key={row?.item_master}>
                     <StyledTableCell
                       component='th'
                       scope='row'
                       className='!tw-font-bold !tw-underline tw-whitespace-nowrap'
                     >
-                      {row.manufacturer}
+                      {row?.manufacturer ? row?.manufacturer : '-'}
                     </StyledTableCell>
 
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.capitalization_date}
+                      {row?.capitalization_date? row?.capitalization_date : '-'}
                     </StyledTableCell>
                     <StyledTableCell
                       className='!tw-font-bold tw-whitespace-nowrap'
                       align='center'
                     >
-                      {row.preferred_vendor}
+                      {row?.preferred_vendor ? row?.preferred_vendor:'-'}
                     </StyledTableCell>
+                    
+                    
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.uom_name}
-                    </StyledTableCell>
-                    <StyledTableCell
-                      className='!tw-font-bold tw-whitespace-nowrap'
-                      align='center'
-                    >
-                      {row.asset_group}
-                    </StyledTableCell>
-                    <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.asset_class}
+                      {row?.uom_name ? row?.uom_name : '-'}
                     </StyledTableCell>
 
                     <StyledTableCell
                       className='!tw-font-bold tw-whitespace-nowrap'
                       align='center'
                     >
-                      {row.remarks}
+                      {row?.asset_group ? row?.asset_group : '-'}
                     </StyledTableCell>
                     <StyledTableCell
                       className='!tw-font-bold tw-whitespace-nowrap'
                       align='center'
                     >
-                      {row.attachments}
+                      {row?.asset_class ? row?.asset_class : '-'}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.warranty_period}
+                      {row?.remarks ? row?.remarks : '-'}
                     </StyledTableCell>
                     <StyledTableCell
                       className='!tw-font-bold tw-whitespace-nowrap'
                       align='center'
                     >
-                      {row.warranty_start_date}
+                      {row?.attachments ? row?.attachments : '-'}
+                    </StyledTableCell>
+                    <StyledTableCell className='!tw-font-bold ' align='center'>
+                      {row?.warranty_period ? row?.warranty_period : '-'}
                     </StyledTableCell>
                     <StyledTableCell
                       className='!tw-font-bold tw-whitespace-nowrap'
                       align='center'
                     >
-                      {row.warranty_end_date}
+                      {row?.warranty_start_date ? row?.warranty_start_date : '-'}
+                    </StyledTableCell>
+                    <StyledTableCell
+                      className='!tw-font-bold tw-whitespace-nowrap'
+                      align='center'
+                    >
+                      {row?.warranty_end_date ? row?.warranty_end_date : '-'}
                     </StyledTableCell>
                     {/* <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.Currency}
+                      {row?.Currency}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.BankCountry}
+                      {row?.BankCountry}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.BankName}
+                      {row?.BankName}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.BankCode}
+                      {row?.BankCode}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.Account}
+                      {row?.Account}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.BICSWIFTCode}
+                      {row?.BICSWIFTCode}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.BankAccountName}
+                      {row?.BankAccountName}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.Branch}
+                      {row?.Branch}
                     </StyledTableCell>
                     <StyledTableCell className='!tw-font-bold ' align='center'>
-                      {row.IBAN}
+                      {row?.IBAN}
                     </StyledTableCell> */}
                   </StyledTableRow>
                 ))}

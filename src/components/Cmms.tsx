@@ -33,7 +33,7 @@ import { formatDate } from '@/utils/getDateDiffInDays';
 import CMMSDetailsModal from './CMMSDetailsModal';
 //import { formatDate } from '@/utils/getDateDiffInDays';
 import Footer from './Footer';
-import InventoryDetailsModal from './InventoryDetailsModal';
+import { CmmsTypeObject } from '@/utils/DataTypes';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,7 +65,6 @@ const Home = () => {
 
   const [updateDataCMSS, setUpdateDataCMMS] = useState(false);
   const [showSyncingCMMS, setShowSyncingCMMS] = useState(false);
-  const [sesamiToCMMSSearched, setSesamiToCMMSSearched] = useState<any>([]);
   const [sapb1SearchParams, setSapb1SearchParams] = useState<string>('');
 
   const [CMMSDetailsModalNo, setCMMSDetailsModalNo] = useState<string | null>(
@@ -81,9 +80,9 @@ const Home = () => {
 
   // inventories
 
-  const [inventoryDetailsModalNo, setInventoryDetailsModalNo] = useState<
-    string | null
-  >(null);
+  // const [inventoryDetailsModalNo, setInventoryDetailsModalNo] = useState<
+  //   string | null
+  // >(null);
 
   useEffect(() => {
     const iconElement = document.getElementById('restart-icon-cmms');
@@ -122,7 +121,7 @@ const Home = () => {
         const postUrl =
           '  http://202.165.24.206/TommsApi/api/AssetApiKey/saveAsset';
 
-        const itemInfo: any = sesamiToCMMSSearched.find(
+        const itemInfo: any = sapb1ToCmms?.find(
           (item: any) => item.item_no === itemNo
         );
 
@@ -185,34 +184,34 @@ const Home = () => {
     });
   }
 
-  useEffect(() => {
-    if (sapb1SearchParams.length === 0) {
-      setSesamiToCMMSSearched([...sapb1ToCmms]);
+  // useEffect(() => {
+  //   if (sapb1SearchParams.length === 0) {
+  //     setSesamiToCMMSSearched([...sapb1ToCmms]);
 
-      return;
-    }
+  //     return;
+  //   }
 
-    const searched: Array<any> = [];
+  //   const searched: Array<any> = [];
 
-    sapb1ToCmms.forEach((cmms: any) => {
-      if (
-        cmms.item_no.toLowerCase().includes(sapb1SearchParams.toLowerCase()) ||
-        cmms.item_group
-          .toLowerCase()
-          .includes(sapb1SearchParams.toLowerCase()) ||
-        cmms.foreign_name
-          .toLowerCase()
-          .includes(sapb1SearchParams.toLowerCase()) ||
-        cmms.description.toLowerCase().includes(sapb1SearchParams.toLowerCase())
-      ) {
-        searched.push(cmms);
+  //   sapb1ToCmms.forEach((cmms: any) => {
+  //     if (
+  //       cmms.item_no.toLowerCase().includes(sapb1SearchParams.toLowerCase()) ||
+  //       cmms.item_group
+  //         .toLowerCase()
+  //         .includes(sapb1SearchParams.toLowerCase()) ||
+  //       cmms.foreign_name
+  //         .toLowerCase()
+  //         .includes(sapb1SearchParams.toLowerCase()) ||
+  //       cmms.description.toLowerCase().includes(sapb1SearchParams.toLowerCase())
+  //     ) {
+  //       searched.push(cmms);
 
-        return;
-      }
-    });
+  //       return;
+  //     }
+  //   });
 
-    setSesamiToCMMSSearched([...searched]);
-  }, [sapb1ToCmms, sapb1SearchParams]);
+  //   setSesamiToCMMSSearched([...searched]);
+  // }, [sapb1ToCmms, sapb1SearchParams]);
 
   const twentyFourHoursInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -228,7 +227,7 @@ const Home = () => {
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
   let disableSubmitCMMS = true;
 
-  if (rowCheckedCMSS && sesamiToCMMSSearched.length > 0) {
+  if (rowCheckedCMSS && sapb1ToCmms?.length > 0) {
     Object.keys(rowCheckedCMSS).forEach(itemNo => {
       if (rowCheckedCMSS[itemNo] === true) {
         if (syncedDataToCmms[itemNo]?.pushed === undefined) {
@@ -245,8 +244,8 @@ const Home = () => {
   }
 
   let allRowsCMMSChecked = true;
-  if (rowCheckedCMSS && sesamiToCMMSSearched.length > 0) {
-    sesamiToCMMSSearched.forEach((item: any) => {
+  if (rowCheckedCMSS && sapb1ToCmms?.length > 0) {
+    sapb1ToCmms?.forEach((item: any) => {
       if (rowCheckedCMSS[item.item_no] === true) {
         return;
       }
@@ -265,14 +264,14 @@ const Home = () => {
   const checkAllCMMSRows = () => {
     if (allRowsCMMSChecked) {
       const rowCheckedCMSSNow = rowCheckedCMSS;
-      sesamiToCMMSSearched.forEach((item: any) => {
+      sapb1ToCmms?.forEach((item: any) => {
         rowCheckedCMSSNow[item.item_no] = false;
       });
 
       setRowCheckedCMSS({ ...rowCheckedCMSSNow });
     } else {
       const rowCheckedCMSSNow = rowCheckedCMSS;
-      sesamiToCMMSSearched.forEach((item: any) => {
+      sapb1ToCmms.forEach((item: any) => {
         rowCheckedCMSSNow[item.item_no] = true;
       });
 
@@ -286,19 +285,20 @@ const Home = () => {
 
       <CMMSDetailsModal
         open={CMMSDetailsModalNo !== null}
-        data={
-          sesamiToCMMSSearched.find(
-            (data: any) => data.item_no === CMMSDetailsModalNo
-          ) || []
-        }
+        // data={
+        //   sapb1ToCmms?.find(
+        //     (data: any) => data.item_no === CMMSDetailsModalNo
+        //   ) || []
+        // }
+        data={CMMSDetailsModalNo as CmmsTypeObject  | ''}
         setCMMSDetailsModalNo={setCMMSDetailsModalNo}
       />
 
-      <InventoryDetailsModal
+      {/* <InventoryDetailsModal 
         open={inventoryDetailsModalNo !== null}
         itemNo={inventoryDetailsModalNo || ''}
         setInventoryDetailsModalNo={setInventoryDetailsModalNo}
-      />
+      /> */}
 
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -471,7 +471,7 @@ const Home = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody className=' !tw-text-black'>
-                    {sesamiToCMMSSearched.map((row: any) => (
+                    {sapb1ToCmms?.map((row: any) => (
                       <>
                         <StyledTableRow key={row.gl_code}>
                           <StyledTableCell
@@ -498,8 +498,9 @@ const Home = () => {
 
                               <span
                                 className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'
-                                onClick={() =>
-                                  setCMMSDetailsModalNo(row.item_no)
+                                onClick={() =>{
+                                  console.log('row',row)
+                                  setCMMSDetailsModalNo(row)}
                                 }
                               >
                                 {row.item_no}

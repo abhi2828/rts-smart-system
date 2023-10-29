@@ -27,7 +27,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import Header from '@/components/Header';
-import { formatDate } from '@/utils/getDateDiffInDays';
 
 //import FullScreenDialog from './FullScreenDialog';
 //import SesamiToSapModalInfo from './SesamiToSapModalInfo';
@@ -35,6 +34,7 @@ import { formatDate } from '@/utils/getDateDiffInDays';
 //import { formatDate } from '@/utils/getDateDiffInDays';
 import Footer from './Footer';
 import InventoryDetailsModal from './InventoryDetailsModal';
+import { NewInventoryTypeObject, ReceiveInventoryTypeObject } from '@/utils/DataTypes';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -58,11 +58,10 @@ const Inventory = () => {
   const [snackMessage, setSnackMessage] = useState('Please select data');
 
   const [inventoryData, setInventories] = useState<any>([]);
-  const [loadingInventory, setLoadingInventory] = useState(true);
+  // const [loadingInventory, setLoadingInventory] = useState(true);
 
   const [updateDataInventory, setUpdateDataInventory] = useState(false);
   const [showSyncingInventory, setShowSyncingInventory] = useState(false);
-  const [inventorySearched, setInventorySearched] = useState<any>([]);
   const [inventorySearchParams, setInventorySearchParams] =
     useState<string>('');
 
@@ -78,7 +77,7 @@ const Inventory = () => {
   >(null);
 
   // useEffect(() => {
-  //   if (inventorySearchParams.length === 0) {
+  //   if (inventorySearchParams?.length === 0) {
   //     setInventorySearched([...inventoryData]);
 
   //     return;
@@ -107,283 +106,53 @@ const Inventory = () => {
   //   setInventorySearched([...searched]);
   // }, [inventoryData, inventorySearchParams]);
 
-  useEffect(() => {
-    const iconElement = document.getElementById('restart-icon');
 
-    if (iconElement) {
-      iconElement.classList.add('rotate-animation');
-      setTimeout(() => {
-        iconElement.classList.remove('rotate-animation');
-      }, 1000);
-    }
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' +
-    //       new Date().getFullYear()
-    //   );
-
-    //   setInventories([...data.data.data]);
-    //   setLoadingInventory(false);
-    // })();
-  }, [updateDataInventory, showSyncingInventory]);
 
   // inventory receive line
 
   const [inventoryReceiveLineDocNo, setInventoryReceiveLineDocNo] = useState(1);
-  const [inventoryReceiveLineDocNoList, setInventoryReceiveLineDocNoList] =
-    useState<Array<number>>([]);
 
-  const [inventoryDataReceiveLine, setInventoryDataReceiveLine] = useState<any>(
-    []
-  );
-  const [loadingInventoryReceiveLine, setLoadingInventoryReceiveLine] =
-    useState(true);
+  // const [inventoryDataReceiveLine, setInventoryDataReceiveLine] = useState<any>( [] );
+
+  // const [loadingInventoryReceiveLine, setLoadingInventoryReceiveLine] =
+  //   useState(true);
 
   const [updateDataInventoryReceiveLine, setUpdateDataInventoryReceiveLine] =
     useState(false);
   const [showSyncingInventoryReceiveLine, setShowSyncingInventoryReceiveLine] =
     useState(false);
-  const [inventorySearchedReceiveLine, setInventorySearchedReceiveLine] =
-    useState<any>([]);
+  // const [inventorySearchedReceiveLine, setInventorySearchedReceiveLine] =
+  //   useState<any>([]);
   const [
     inventorySearchParamsReceiveLine,
     setInventorySearchParamsReceiveLine,
   ] = useState<string>('');
 
-  useEffect(() => {
-    if (inventorySearchParamsReceiveLine.length === 0) {
-      setInventorySearchedReceiveLine([...inventoryDataReceiveLine]);
-
-      return;
-    }
-
-    const searched: Array<any> = [];
-
-    inventoryDataReceiveLine.forEach((inventory: any) => {
-      if (
-        inventory.number
-          .toLowerCase()
-          .includes(inventorySearchParamsReceiveLine.toLowerCase())
-      ) {
-        searched.push(inventory);
-
-        return;
-      }
-    });
-
-    setInventorySearchedReceiveLine([...searched]);
-  }, [inventoryDataReceiveLine, inventorySearchParamsReceiveLine]);
-
-  useEffect(() => {
-    const iconElement = document.getElementById(
-      'restart-icon'
-    );
-
-    if (iconElement) {
-      iconElement.classList.add('rotate-animation');
-      setTimeout(() => {
-        iconElement.classList.remove('rotate-animation');
-      }, 1000);
-    }
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/' +
-    //       inventoryReceiveLineDocNo
-    //   );
-
-    //   setInventoryDataReceiveLine([...[data.data.data]]);
-    //   setLoadingInventoryReceiveLine(false);
-    // })();
-  }, [
-    updateDataInventoryReceiveLine,
-    showSyncingInventoryReceiveLine,
-    inventoryReceiveLineDocNo,
-  ]);
-
-  // inventory issue line
   const [inventoryIssueLineDocNo, setInventoryIssueLineDocNo] = useState(1);
-  const [inventoryIssueLineDocNoList, setInventoryIssueLineDocNoList] =
-    useState<any>([]);
-  const [inventoryDataIssueLine, setInventoryDataIssueLine] = useState<any>([]);
-  const [loadingInventoryIssueLine, setLoadingInventoryIssueLine] =
-    useState(true);
 
   const [updateDataInventoryIssueLine, setUpdateDataInventoryIssueLine] =
     useState(false);
   const [showSyncingInventoryIssueLine, setShowSyncingInventoryIssueLine] =
     useState(false);
-  const [inventorySearchedIssueLine, setInventorySearchedIssueLine] =
-    useState<any>([]);
+
   const [inventorySearchParamsIssueLine, setInventorySearchParamsIssueLine] =
     useState<string>('');
 
-  useEffect(() => {
-    if (inventorySearchParamsIssueLine.length === 0) {
-      setInventorySearchedIssueLine([...inventoryDataIssueLine]);
-
-      return;
-    }
-
-    const searched: Array<any> = [];
-
-    inventoryDataIssueLine.forEach((inventory: any) => {
-      if (
-        inventory.item_no
-          .toLowerCase()
-          .includes(inventorySearchParamsIssueLine.toLowerCase())
-      ) {
-        searched.push(inventory);
-
-        return;
-      }
-    });
-
-    setInventorySearchedIssueLine([...searched]);
-  }, [inventoryDataIssueLine, inventorySearchParamsIssueLine]);
-
-  useEffect(() => {
-    const iconElement = document.getElementById(
-      'restart-icon'
-    );
-
-    if (iconElement) {
-      iconElement.classList.add('rotate-animation');
-      setTimeout(() => {
-        iconElement.classList.remove('rotate-animation');
-      }, 1000);
-    }
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/' +
-    //       inventoryIssueLineDocNo
-    //   );
-
-    //   setInventoryDataIssueLine([...[data.data.data]]);
-    //   setLoadingInventoryIssueLine(false);
-    // })();
-  }, [
-    updateDataInventoryIssueLine,
-    showSyncingInventoryIssueLine,
-    inventoryIssueLineDocNo,
-  ]);
-
-  // inventory return flow
   const [inventoryDataReturnFlowDocNo, setInventoryDataReturnFlowDocNo] =
     useState(1);
-  const [
-    inventoryDataReturnFlowDocNoList,
-    setInventoryDataReturnFlowDocNoList,
-  ] = useState<any>([]);
-  const [inventoryDataReturnFlow, setInventoryDataReturnFlow] = useState<any>(
-    []
-  );
-  const [loadingInventoryReturnFlow, setLoadingInventoryReturnFlow] =
-    useState(true);
 
   const [updateDataInventoryReturnFlow, setUpdateDataInventoryReturnFlow] =
     useState(false);
   const [showSyncingInventoryReturnFlow, setShowSyncingInventoryReturnFlow] =
     useState(false);
-  const [inventorySearchedReturnFlow, setInventorySearchedReturnFlow] =
-    useState<any>([]);
   const [inventorySearchParamsReturnFlow, setInventorySearchParamsReturnFlow] =
     useState<string>('');
-
-  useEffect(() => {
-    if (inventorySearchParamsReturnFlow.length === 0) {
-      setInventorySearchedReturnFlow([...inventoryDataReturnFlow]);
-
-      return;
-    }
-
-    const searched: Array<any> = [];
-
-    inventoryDataReturnFlow.forEach((inventory: any) => {
-      if (
-        inventory.vendor_code
-          .toLowerCase()
-          .includes(inventorySearchParamsReturnFlow.toLowerCase())
-      ) {
-        searched.push(inventory);
-
-        return;
-      }
-    });
-
-    setInventorySearchedReturnFlow([...searched]);
-  }, [inventoryDataReturnFlow, inventorySearchParamsReturnFlow]);
-
-  useEffect(() => {
-    const iconElement = document.getElementById(
-      'restart-icon'
-    );
-
-    if (iconElement) {
-      iconElement.classList.add('rotate-animation');
-      setTimeout(() => {
-        iconElement.classList.remove('rotate-animation');
-      }, 1000);
-    }
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/' +
-    //       inventoryDataReturnFlowDocNo
-    //   );
-
-    //   setInventoryDataReturnFlow([...[data.data.data]]);
-    //   setLoadingInventoryReturnFlow(false);
-    // })();
-  }, [
-    updateDataInventoryReturnFlow,
-    showSyncingInventoryReturnFlow,
-    inventoryDataReturnFlowDocNo,
-  ]);
-
-  useEffect(() => {
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-    //       'receive' +
-    //       '/' +
-    //       new Date().getFullYear()
-    //   );
-
-    //   setInventoryReceiveLineDocNoList([...data.data.data]);
-    // })();
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-    //       'issue' +
-    //       '/' +
-    //       new Date().getFullYear()
-    //   );
-
-    //   setInventoryIssueLineDocNoList([...data.data.data]);
-    // })();
-
-    // (async () => {
-    //   const data = await axios.get(
-    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-    //       'return' +
-    //       '/' +
-    //       new Date().getFullYear()
-    //   );
-
-    //   setInventoryDataReturnFlowDocNoList([...data.data.data]);
-    // })();
-  }, [updateDataInventoryReturnFlow, showSyncingInventoryReturnFlow]);
 
   const [inventoryType, setInventoryType] = useState<string>('inventory');
 
   let allInventoryRowsAreChecked = true;
-  if (rowCheckedInventory && inventorySearched.length > 0) {
-    inventorySearched.forEach((row: any) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  if (rowCheckedInventory && inventoryData?.length > 0) {
+    inventoryData.forEach((row: any) => {
 
       if (rowCheckedInventory[row?.item_no] === true) {
         return;
@@ -403,14 +172,14 @@ const Inventory = () => {
   const checkAllInventoryRows = () => {
     if (allInventoryRowsAreChecked) {
       const rowCheckedInventoryNow = rowCheckedInventory;
-      inventorySearched.forEach((row: any) => {
+      inventoryData.forEach((row: any) => {
         rowCheckedInventoryNow[row?.item_no] = false;
       });
 
       setRowCheckedInventory({ ...rowCheckedInventoryNow });
     } else {
       const rowCheckedInventoryNow = rowCheckedInventory;
-      inventorySearched.forEach((row: any) => {
+      inventoryData.forEach((row: any) => {
         rowCheckedInventoryNow[row?.item_no] = true;
       });
 
@@ -419,7 +188,7 @@ const Inventory = () => {
   };
 
   const createInventory = async () => {
-    if (Object.keys(rowCheckedInventory).length === 0) {
+    if (Object.keys(rowCheckedInventory)?.length === 0) {
       setSnackMessage('Please select data');
       setShowSnack(true);
 
@@ -433,7 +202,7 @@ const Inventory = () => {
 
       const inventoryDataCurrent =
         //@ts-ignore
-        inventorySearched.find(row => row?.item_no === itemNo);
+        inventoryData.find(row => row?.item_no === itemNo);
       (async () => {
         try {
           const transformedItems = {
@@ -473,23 +242,6 @@ const Inventory = () => {
 
 const ApiCall = async () => {
   let url;
-  
-  
-  // switch (inventoryType) {
-  //   case 'receive':
-  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryReceiveLineDocNo}`;
-  //     break;
-  //   case 'issue':
-  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/${inventoryReceiveLineDocNo}`
-  //     break;
-  //   case 'return':
-  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/${inventoryReceiveLineDocNo}`
-  //     break;
-  //   default:
-  //     url = 'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' + new Date().getFullYear();
-  //     break;
-  // }
-
 if (inventoryType === 'receive') {
   url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryReceiveLineDocNo}`;
 }
@@ -508,27 +260,39 @@ else{
     
     if (inventoryCollections?.includes(inventoryType)) {
       
-      if(inventoryType === 'receive'){
+      if(inventoryType === 'return'){
         let newData
         newData= response?.data?.data?.items?.map((e:any)=>{
           return {...e,number:response?.data?.data?.number,
             remarks:response?.data?.data?.remarks,
-            user_name:response?.data?.data?.user_name,}
+            user_name:response?.data?.data?.user_name,
+            attachments:response?.data?.data?.attachments,
+            vendor_code:response?.data?.data?.vendor_code,
+            vendor_name:response?.data?.data?.vendor_name,
+            posting_date:response?.data?.data?.posting_date,
+            owner:response?.data?.data?.owner,
+          }
         })
-        console.log('newData', newData)
         setInventories([...newData ]) 
       }
       else{ 
-        setInventories([response?.data?.data]) 
+        let newData
+        newData= response?.data?.data?.items?.map((e:any)=>{
+          return {...e,number:response?.data?.data?.number,
+            remarks:response?.data?.data?.remarks,
+            user_name:response?.data?.data?.user_name,
+            attachments:response?.data?.data?.attachments,
+          }
+        })
+        setInventories([...newData ]) 
       }
+
     } else {
        setInventories([...response?.data?.data])
     }
   } catch (error) {
-    console.log('error', error)
   }
   
-  setLoadingInventoryIssueLine(false);
 }
 
 
@@ -542,19 +306,19 @@ useEffect(() => {
     }, 1000);
   }
   ApiCall()
-    setLoadingInventory(false);
+    // setLoadingInventory(false);
 }, [updateDataInventory, showSyncingInventory,inventoryType]);
 
-console.log('inventoryType',inventoryType);
 console.log('inventoryData', inventoryData)
+console.log('inventoryDetailsModalNo', inventoryDetailsModalNo)
   return (
     <>
       <Header />
 
       <InventoryDetailsModal
         open={inventoryDetailsModalNo !== null}
-        itemNo={inventoryDetailsModalNo || ''}
-        inventoryDetails={inventoryData}
+        // itemNo={typeof inventoryDetailsModalNo === 'string' ? {} as NewInventoryTypeObject | ReceiveInventoryTypeObject : inventoryDetailsModalNo}
+        itemNo={inventoryDetailsModalNo as NewInventoryTypeObject | ReceiveInventoryTypeObject | ''}
         inventoryType={inventoryType}
         setInventoryDetailsModalNo={setInventoryDetailsModalNo}
       />
@@ -597,10 +361,10 @@ console.log('inventoryData', inventoryData)
               <MenuItem value='receive'>
                 Inventory Receive line
               </MenuItem>
-              <MenuItem value={'inventoryIssueLine'}>
+              <MenuItem value={'issue'}>
                 Inventory Issue line
               </MenuItem>
-              <MenuItem value={'inventoryReturnFlow'}>
+              <MenuItem value={'return'}>
                 Inventory Return flow
               </MenuItem>
             </Select>
@@ -774,7 +538,7 @@ console.log('inventoryData', inventoryData)
                                     setInventoryDetailsModalNo(row)
                                   }
                                 >
-                                  {row?.item_no}
+                                  {row?.item_no ? row?.item_no : '-'}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -783,35 +547,35 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.item_type}
+                              {row?.item_type || '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.item_group}
+                              {row?.item_group || '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.description}
+                              {row?.description || '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.warehouse[0]?.warehouse_name || ''}
+                              {row?.warehouse[0]?.warehouse_name || '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.cost_center}
+                              {row?.cost_center ? row?.cost_center : '-'}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
@@ -825,7 +589,7 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.serial_numbers}
+                              {row?.serial_numbers ? row?.serial_numbers : '-'}
                             </StyledTableCell>
                           </StyledTableRow>
                         </>
@@ -837,8 +601,9 @@ console.log('inventoryData', inventoryData)
             </div>
             <div className='tw-flex tw-justify-end tw-pr-5'>
               <button
-                className='tw-rounded-lg tw-bg-primary tw-px-7 tw-py-3 tw-text-white'
+                className={`tw-rounded-lg  tw-px-7 tw-py-3 tw-text-white ${ Object.values(rowCheckedInventory).includes(true)? 'tw-bg-primary ': 'tw-bg-gray-400' }`}
                 onClick={createInventory}
+                disabled={!(Object.values(rowCheckedInventory).includes(true))}
               >
                 CREATE Inventory
               </button>
@@ -935,7 +700,7 @@ console.log('inventoryData', inventoryData)
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryData?.items?.length}
+                  {inventoryData?.length}
                 </div>
               </div>
             </div>
@@ -1013,7 +778,7 @@ console.log('inventoryData', inventoryData)
                                     setInventoryDetailsModalNo(row)
                                   }
                                 >
-                                  {row?.item_no}
+                                  {row?.item_no ? row?.item_no : '-'}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -1021,37 +786,37 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.warehouse}
+                              {row?.warehouse ? row?.warehouse : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.uom_code}
+                              {row?.uom_code ? row?.uom_code : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.number}
+                              {row?.number ? row?.number : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.quantity}
+                              {row?.quantity ? row?.quantity : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.user_name}
+                              {row?.user_name ? row?.user_name : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.remarks}
+                              {row?.remarks ? row?.remarks : '-'}
                             </StyledTableCell>
                           </StyledTableRow>
                         </>
@@ -1114,7 +879,6 @@ console.log('inventoryData', inventoryData)
                   className='tw-ml-1 tw-py-2 tw-pb-5 !tw-text-sm !tw-text-gray-900'
                   id='demo-simple-select-label'
                 >
-                  {' '}
                   Quick Search
                 </FormLabel>
                 <TextField
@@ -1139,7 +903,7 @@ console.log('inventoryData', inventoryData)
                     setInventoryIssueLineDocNo(e.target.value as number)
                   }
                 >
-                  {inventoryIssueLineDocNoList?.map((docNo: any) => (
+                  {[1]?.map((docNo: any) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -1151,7 +915,7 @@ console.log('inventoryData', inventoryData)
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryData.length}
+                  {inventoryData?.length}
                 </div>
               </div>
             </div>
@@ -1174,7 +938,7 @@ console.log('inventoryData', inventoryData)
                           align='center'
                           className='tw-whitespace-nowrap'
                         >
-                          ITEM TYPE
+                          ITEM COST
                         </StyledTableCell>
 
                         <StyledTableCell
@@ -1188,7 +952,7 @@ console.log('inventoryData', inventoryData)
                           align='center'
                           className='tw-whitespace-nowrap'
                         >
-                          ITEM DESCRIPTION
+                          DESCRIPTION
                         </StyledTableCell>
 
                         <StyledTableCell
@@ -1222,8 +986,12 @@ console.log('inventoryData', inventoryData)
                               align='center'
                             >
                               <div className='tw-flex-start tw-flex tw-w-full tw-max-w-[150px] tw-items-center'>
-                                <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'>
-                                  {row?.item_no}
+                                <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'
+                                 onClick={() =>
+                                  setInventoryDetailsModalNo(row)
+                                }
+                                >
+                                  {row?.item_no ? row?.item_no : '-'}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -1232,15 +1000,8 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.number}
+                              {row?.item_cost ? row?.item_cost : '-'}
                             </StyledTableCell>
-
-                            {/* <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row?.warehouse}
-                            </StyledTableCell> */}
 
                             {/* <StyledTableCell
                               className='!tw-font-bold '
@@ -1253,27 +1014,32 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.description}
+                              {row?.warehouse ? row?.warehouse : '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.uom_code}
-                            </StyledTableCell>
-
-                            <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row?.quantity}
+                              {row?.description ? row?.description : '-'}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.user_name}
+                              {row?.uom_code ? row?.uom_code : '-'}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              className='!tw-font-bold '
+                              align='center'
+                            >
+                              {row?.quantity ? row?.quantity :'-'}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              className='!tw-font-bold '
+                              align='center'
+                            >
+                              {row?.user_name ? row?.user_name : '-'}
                             </StyledTableCell>
                           </StyledTableRow>
                         </>
@@ -1286,7 +1052,7 @@ console.log('inventoryData', inventoryData)
         )}
 
         {/* inventory Return Flow */}
-        {inventoryType === 'inventoryReturnFlow' && (
+        {inventoryType === 'return' && (
           <Card className='tw-mx-[7rem] tw-mt-10 tw-rounded-sm tw-bg-white tw-px-10  tw-py-5'>
             <div className='tw-mt-3 tw-flex  tw-justify-between tw-gap-[30%] tw-font-extrabold'>
               <div className='tw-flex tw-flex-col'>
@@ -1358,7 +1124,7 @@ console.log('inventoryData', inventoryData)
                     setInventoryDataReturnFlowDocNo(e.target.value as number)
                   }
                 >
-                  {inventoryDataReturnFlowDocNoList?.map((docNo: any) => (
+                  {[1]?.map((docNo: any) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -1370,12 +1136,12 @@ console.log('inventoryData', inventoryData)
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryDataReturnFlow.length}
+                  {inventoryData?.length}
                 </div>
               </div>
             </div>
             <div style={{ width: '100%' }} className='tw-my-10'>
-              {!loadingInventoryReturnFlow && (
+              { (
                 <TableContainer
                   component={Paper}
                   className='!tw-rounded-2xl tw-text-base'
@@ -1434,7 +1200,7 @@ console.log('inventoryData', inventoryData)
                       </TableRow>
                     </TableHead>
                     <TableBody className=' !tw-text-black'>
-                      {inventorySearchedReturnFlow?.map((row: any) => (
+                      {inventoryData?.map((row: any) => (
                         <>
                           <StyledTableRow key={row?.item_no}>
                             <StyledTableCell
@@ -1442,8 +1208,12 @@ console.log('inventoryData', inventoryData)
                               align='center'
                             >
                               <div className='tw-flex-start tw-flex tw-w-full tw-max-w-[150px] tw-items-center'>
-                                <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'>
-                                  {row?.item_no}
+                                <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'
+                                 onClick={() =>
+                                  setInventoryDetailsModalNo(row)
+                                }
+                                >
+                                  {row?.item_no ? row?.item_no : '-'}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -1452,14 +1222,14 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.quantity}
+                              {row?.quantity ? row?.quantity : '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.posting_date}
+                              {row?.posting_date || '-'}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
@@ -1473,14 +1243,14 @@ console.log('inventoryData', inventoryData)
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.remarks}
+                              {row?.remarks ? row?.remarks : '-'}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row?.owner}
+                              {row?.owner ? row?.owner : '-'}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
