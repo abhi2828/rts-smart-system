@@ -77,38 +77,38 @@ const Inventory = () => {
     string | null
   >(null);
 
+  // useEffect(() => {
+  //   if (inventorySearchParams.length === 0) {
+  //     setInventorySearched([...inventoryData]);
+
+  //     return;
+  //   }
+
+  //   const searched: Array<any> = [];
+
+  //   inventoryData.forEach((inventory: any) => {
+  //     if (
+  //       inventory.item_no
+  //         .toLowerCase()
+  //         .includes(inventorySearchParams.toLowerCase()) ||
+  //       inventory.item_group
+  //         .toLowerCase()
+  //         .includes(inventorySearchParams.toLowerCase()) ||
+  //       inventory.description
+  //         .toLowerCase()
+  //         .includes(inventorySearchParams.toLowerCase())
+  //     ) {
+  //       searched.push(inventory);
+
+  //       return;
+  //     }
+  //   });
+
+  //   setInventorySearched([...searched]);
+  // }, [inventoryData, inventorySearchParams]);
+
   useEffect(() => {
-    if (inventorySearchParams.length === 0) {
-      setInventorySearched([...inventoryData]);
-
-      return;
-    }
-
-    const searched: Array<any> = [];
-
-    inventoryData.forEach((inventory: any) => {
-      if (
-        inventory.item_no
-          .toLowerCase()
-          .includes(inventorySearchParams.toLowerCase()) ||
-        inventory.item_group
-          .toLowerCase()
-          .includes(inventorySearchParams.toLowerCase()) ||
-        inventory.description
-          .toLowerCase()
-          .includes(inventorySearchParams.toLowerCase())
-      ) {
-        searched.push(inventory);
-
-        return;
-      }
-    });
-
-    setInventorySearched([...searched]);
-  }, [inventoryData, inventorySearchParams]);
-
-  useEffect(() => {
-    const iconElement = document.getElementById('restart-icon-inventory');
+    const iconElement = document.getElementById('restart-icon');
 
     if (iconElement) {
       iconElement.classList.add('rotate-animation');
@@ -117,15 +117,15 @@ const Inventory = () => {
       }, 1000);
     }
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' +
-          new Date().getFullYear()
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' +
+    //       new Date().getFullYear()
+    //   );
 
-      setInventories([...data.data.data]);
-      setLoadingInventory(false);
-    })();
+    //   setInventories([...data.data.data]);
+    //   setLoadingInventory(false);
+    // })();
   }, [updateDataInventory, showSyncingInventory]);
 
   // inventory receive line
@@ -177,7 +177,7 @@ const Inventory = () => {
 
   useEffect(() => {
     const iconElement = document.getElementById(
-      'restart-icon-inventory-receive-line'
+      'restart-icon'
     );
 
     if (iconElement) {
@@ -187,15 +187,15 @@ const Inventory = () => {
       }, 1000);
     }
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/' +
-          inventoryReceiveLineDocNo
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/' +
+    //       inventoryReceiveLineDocNo
+    //   );
 
-      setInventoryDataReceiveLine([...[data.data.data]]);
-      setLoadingInventoryReceiveLine(false);
-    })();
+    //   setInventoryDataReceiveLine([...[data.data.data]]);
+    //   setLoadingInventoryReceiveLine(false);
+    // })();
   }, [
     updateDataInventoryReceiveLine,
     showSyncingInventoryReceiveLine,
@@ -245,7 +245,7 @@ const Inventory = () => {
 
   useEffect(() => {
     const iconElement = document.getElementById(
-      'restart-icon-inventory-issue-line'
+      'restart-icon'
     );
 
     if (iconElement) {
@@ -255,15 +255,15 @@ const Inventory = () => {
       }, 1000);
     }
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/' +
-          inventoryIssueLineDocNo
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/' +
+    //       inventoryIssueLineDocNo
+    //   );
 
-      setInventoryDataIssueLine([...[data.data.data]]);
-      setLoadingInventoryIssueLine(false);
-    })();
+    //   setInventoryDataIssueLine([...[data.data.data]]);
+    //   setLoadingInventoryIssueLine(false);
+    // })();
   }, [
     updateDataInventoryIssueLine,
     showSyncingInventoryIssueLine,
@@ -318,7 +318,7 @@ const Inventory = () => {
 
   useEffect(() => {
     const iconElement = document.getElementById(
-      'restart-icon-inventory-return-flow'
+      'restart-icon'
     );
 
     if (iconElement) {
@@ -328,15 +328,15 @@ const Inventory = () => {
       }, 1000);
     }
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/' +
-          inventoryDataReturnFlowDocNo
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/' +
+    //       inventoryDataReturnFlowDocNo
+    //   );
 
-      setInventoryDataReturnFlow([...[data.data.data]]);
-      setLoadingInventoryReturnFlow(false);
-    })();
+    //   setInventoryDataReturnFlow([...[data.data.data]]);
+    //   setLoadingInventoryReturnFlow(false);
+    // })();
   }, [
     updateDataInventoryReturnFlow,
     showSyncingInventoryReturnFlow,
@@ -344,38 +344,38 @@ const Inventory = () => {
   ]);
 
   useEffect(() => {
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-          'receive' +
-          '/' +
-          new Date().getFullYear()
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
+    //       'receive' +
+    //       '/' +
+    //       new Date().getFullYear()
+    //   );
 
-      setInventoryReceiveLineDocNoList([...data.data.data]);
-    })();
+    //   setInventoryReceiveLineDocNoList([...data.data.data]);
+    // })();
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-          'issue' +
-          '/' +
-          new Date().getFullYear()
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
+    //       'issue' +
+    //       '/' +
+    //       new Date().getFullYear()
+    //   );
 
-      setInventoryIssueLineDocNoList([...data.data.data]);
-    })();
+    //   setInventoryIssueLineDocNoList([...data.data.data]);
+    // })();
 
-    (async () => {
-      const data = await axios.get(
-        'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
-          'return' +
-          '/' +
-          new Date().getFullYear()
-      );
+    // (async () => {
+    //   const data = await axios.get(
+    //     'https://stgrtsapi.clienttech.dev/api/CMMS/get-goods-numbers/' +
+    //       'return' +
+    //       '/' +
+    //       new Date().getFullYear()
+    //   );
 
-      setInventoryDataReturnFlowDocNoList([...data.data.data]);
-    })();
+    //   setInventoryDataReturnFlowDocNoList([...data.data.data]);
+    // })();
   }, [updateDataInventoryReturnFlow, showSyncingInventoryReturnFlow]);
 
   const [inventoryType, setInventoryType] = useState<string>('inventory');
@@ -385,13 +385,13 @@ const Inventory = () => {
     inventorySearched.forEach((row: any) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 
-      if (rowCheckedInventory[row.item_no] === true) {
+      if (rowCheckedInventory[row?.item_no] === true) {
         return;
       }
 
       if (
-        isPushedInventory[row.item_no]?.pushed === true &&
-        typeof isPushedInventory[row.item_no]?.time === 'number'
+        isPushedInventory[row?.item_no]?.pushed === true &&
+        typeof isPushedInventory[row?.item_no]?.time === 'number'
       ) {
         return;
       }
@@ -404,14 +404,14 @@ const Inventory = () => {
     if (allInventoryRowsAreChecked) {
       const rowCheckedInventoryNow = rowCheckedInventory;
       inventorySearched.forEach((row: any) => {
-        rowCheckedInventoryNow[row.item_no] = false;
+        rowCheckedInventoryNow[row?.item_no] = false;
       });
 
       setRowCheckedInventory({ ...rowCheckedInventoryNow });
     } else {
       const rowCheckedInventoryNow = rowCheckedInventory;
       inventorySearched.forEach((row: any) => {
-        rowCheckedInventoryNow[row.item_no] = true;
+        rowCheckedInventoryNow[row?.item_no] = true;
       });
 
       setRowCheckedInventory({ ...rowCheckedInventoryNow });
@@ -433,7 +433,7 @@ const Inventory = () => {
 
       const inventoryDataCurrent =
         //@ts-ignore
-        inventorySearched.find(row => row.item_no === itemNo);
+        inventorySearched.find(row => row?.item_no === itemNo);
       (async () => {
         try {
           const transformedItems = {
@@ -469,6 +469,84 @@ const Inventory = () => {
     });
   };
 
+  const inventoryCollections = ['receive','issue','return'];
+
+const ApiCall = async () => {
+  let url;
+  
+  
+  // switch (inventoryType) {
+  //   case 'receive':
+  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryReceiveLineDocNo}`;
+  //     break;
+  //   case 'issue':
+  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/${inventoryReceiveLineDocNo}`
+  //     break;
+  //   case 'return':
+  //     url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/${inventoryReceiveLineDocNo}`
+  //     break;
+  //   default:
+  //     url = 'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' + new Date().getFullYear();
+  //     break;
+  // }
+
+if (inventoryType === 'receive') {
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryReceiveLineDocNo}`;
+}
+else if (inventoryType === 'issue') {
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/${inventoryReceiveLineDocNo}`
+}
+else if (inventoryType === 'return') {
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/${inventoryReceiveLineDocNo}`
+}
+else{
+  url = 'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' + new Date().getFullYear();
+}
+
+  try {
+    const response = await axios.get(url);
+    
+    if (inventoryCollections?.includes(inventoryType)) {
+      
+      if(inventoryType === 'receive'){
+        let newData
+        newData= response?.data?.data?.items?.map((e:any)=>{
+          return {...e,number:response?.data?.data?.number,
+            remarks:response?.data?.data?.remarks,
+            user_name:response?.data?.data?.user_name,}
+        })
+        console.log('newData', newData)
+        setInventories([...newData ]) 
+      }
+      else{ 
+        setInventories([response?.data?.data]) 
+      }
+    } else {
+       setInventories([...response?.data?.data])
+    }
+  } catch (error) {
+    console.log('error', error)
+  }
+  
+  setLoadingInventoryIssueLine(false);
+}
+
+
+useEffect(() => {
+  const iconElement = document.getElementById('restart-icon');
+
+  if (iconElement) {
+    iconElement.classList.add('rotate-animation');
+    setTimeout(() => {
+      iconElement.classList.remove('rotate-animation');
+    }, 1000);
+  }
+  ApiCall()
+    setLoadingInventory(false);
+}, [updateDataInventory, showSyncingInventory,inventoryType]);
+
+console.log('inventoryType',inventoryType);
+console.log('inventoryData', inventoryData)
   return (
     <>
       <Header />
@@ -476,9 +554,11 @@ const Inventory = () => {
       <InventoryDetailsModal
         open={inventoryDetailsModalNo !== null}
         itemNo={inventoryDetailsModalNo || ''}
+        inventoryDetails={inventoryData}
+        inventoryType={inventoryType}
         setInventoryDetailsModalNo={setInventoryDetailsModalNo}
       />
-
+  
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         className='!tw-z-[99999] !tw-bg-primary !tw-text-white'
@@ -508,10 +588,13 @@ const Inventory = () => {
             <Select
               className='!tw-bg-white !tw-text-black'
               value={inventoryType}
-              onChange={e => setInventoryType(e.target.value)}
+              onChange={e => {
+                setInventories(null)             
+                setInventoryType(()=>e.target.value)}}
+                
             >
               <MenuItem value={'inventory'}>Inventory</MenuItem>
-              <MenuItem value={'inventoryReceiveLine'}>
+              <MenuItem value='receive'>
                 Inventory Receive line
               </MenuItem>
               <MenuItem value={'inventoryIssueLine'}>
@@ -524,7 +607,8 @@ const Inventory = () => {
           </FormControl>
         </div>
 
-        {inventoryType === 'inventory' && (
+
+  {inventoryType === 'inventory' && (
           <Card className='tw-mx-[7rem] tw-mt-10 tw-rounded-sm tw-bg-white tw-px-10  tw-py-5'>
             <div className='tw-mt-3 tw-flex  tw-justify-between tw-gap-[30%] tw-font-extrabold'>
               <div className='tw-flex tw-flex-col'>
@@ -541,7 +625,7 @@ const Inventory = () => {
               </div>
               <div className='tw-flex tw-flex-col tw-items-center tw-justify-end tw-gap-[1rem]'>
                 <RestartAltIcon
-                  id='restart-icon-inventory'
+                  id='restart-icon'
                   fill='black'
                   className='tw-min-h-[4rem]  tw-min-w-[4rem] tw-cursor-pointer'
                   onClick={() => {
@@ -583,12 +667,12 @@ const Inventory = () => {
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryData.length}
+                  {inventoryData?.length}
                 </div>
               </div>
             </div>
             <div style={{ width: '100%' }} className='tw-my-10'>
-              {!loadingInventory && (
+              { (
                 <TableContainer
                   component={Paper}
                   className='!tw-rounded-2xl tw-text-base'
@@ -661,9 +745,9 @@ const Inventory = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody className=' !tw-text-black'>
-                      {inventorySearched.map((row: any) => (
+                      {inventoryData?.map((row: any) => (
                         <>
-                          <StyledTableRow key={row.item_no}>
+                          <StyledTableRow key={row?.item_no}>
                             <StyledTableCell
                               className='!tw-flex !tw-justify-center !tw-font-bold !tw-underline'
                               align='center'
@@ -672,12 +756,12 @@ const Inventory = () => {
                                 <Checkbox
                                   color='primary'
                                   checked={
-                                    rowCheckedInventory[row.item_no] || false
+                                    rowCheckedInventory[row?.item_no] || false
                                   }
                                   onChange={e => {
                                     setRowCheckedInventory({
                                       ...rowCheckedInventory,
-                                      [row.item_no]: e.target.checked,
+                                      [row?.item_no]: e.target.checked,
                                     });
                                   }}
                                   inputProps={{
@@ -687,10 +771,10 @@ const Inventory = () => {
                                 <span
                                   className='tw-cursor-pointer'
                                   onClick={() =>
-                                    setInventoryDetailsModalNo(row.item_no)
+                                    setInventoryDetailsModalNo(row)
                                   }
                                 >
-                                  {row.item_no}
+                                  {row?.item_no}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -699,49 +783,49 @@ const Inventory = () => {
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.item_type}
+                              {row?.item_type}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.item_group}
+                              {row?.item_group}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.description}
+                              {row?.description}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.warehouse?.[0]?.warehouse_name || ''}
+                              {row?.warehouse[0]?.warehouse_name || ''}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.cost_center}
+                              {row?.cost_center}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.description}
+                              {row?.description}
                             </StyledTableCell> */}
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.serial_numbers}
+                              {row?.serial_numbers}
                             </StyledTableCell>
                           </StyledTableRow>
                         </>
@@ -761,7 +845,10 @@ const Inventory = () => {
             </div>
           </Card>
         )}
-        {inventoryType === 'inventoryReceiveLine' && (
+
+        {/* inventory ReceiveLine  */}
+
+        {inventoryType === 'receive' && (
           <Card className='tw-mx-[7rem] tw-mt-10 tw-rounded-sm tw-bg-white tw-px-10  tw-py-5'>
             <div className='tw-mt-3 tw-flex  tw-justify-between tw-gap-[30%] tw-font-extrabold'>
               <div className='tw-flex tw-flex-col'>
@@ -780,7 +867,7 @@ const Inventory = () => {
               </div>
               <div className='tw-flex tw-flex-col tw-items-center tw-justify-end tw-gap-[1rem]'>
                 <RestartAltIcon
-                  id='restart-icon-inventory'
+                  id='restart-icon'
                   fill='black'
                   className='tw-min-h-[4rem]  tw-min-w-[4rem] tw-cursor-pointer'
                   onClick={() => {
@@ -836,7 +923,7 @@ const Inventory = () => {
                     setInventoryReceiveLineDocNo(e.target.value as number)
                   }
                 >
-                  {inventoryReceiveLineDocNoList.map(docNo => (
+                  {[1]?.map(docNo => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -848,12 +935,12 @@ const Inventory = () => {
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryDataReceiveLine.length}
+                  {inventoryData?.items?.length}
                 </div>
               </div>
             </div>
             <div style={{ width: '100%' }} className='tw-my-10'>
-              {!loadingInventoryReceiveLine && (
+              { (
                 <TableContainer
                   component={Paper}
                   className='!tw-rounded-2xl tw-text-base'
@@ -912,98 +999,60 @@ const Inventory = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody className=' !tw-text-black'>
-                      {inventorySearchedReceiveLine.map((row: any) => (
+                      {inventoryData?.map((row: any) => (
                         <>
-                          <StyledTableRow key={row.item_no}>
-                            <StyledTableCell
+                          <StyledTableRow key={row?.item_no}>
+                          <StyledTableCell
                               className='!tw-flex !tw-justify-center !tw-font-bold !tw-underline'
                               align='center'
                             >
                               <div className='tw-flex-start tw-flex tw-w-full tw-max-w-[150px] tw-items-center'>
-                                <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'>
-                                  {row.item_no}
+                              <span
+                                  className='tw-cursor-pointer'
+                                  onClick={() =>
+                                    setInventoryDetailsModalNo(row)
+                                  }
+                                >
+                                  {row?.item_no}
                                 </span>
                               </div>
                             </StyledTableCell>
-
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.warehouse}
-                            </StyledTableCell>
-
-                            <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row.uom_code}
-                            </StyledTableCell>
-
-                            {/* <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row.warehouse?.[0]?.warehouse_name || ''}
-                            </StyledTableCell> */}
-
-                            <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row.number}
+                              {row?.warehouse}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.quantity}
+                              {row?.uom_code}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.user_name}
+                              {row?.number}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.remarks}
-                            </StyledTableCell>
-                            {/* <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row.number}
-                            </StyledTableCell> */}
-
-                            {/* <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {isPushedInventory[row.item_no]?.pushed !==
-                              undefined
-                                ? formatDate(
-                                    new Date(
-                                      isPushedInventory[row.item_no]
-                                        ?.time as number
-                                    )
-                                  )
-                                : '-'}
+                              {row?.quantity}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {isPushedInventory[row.item_no]?.pushed !==
-                              undefined
-                                ? isPushedInventory[row.item_no]?.pushed !==
-                                  false
-                                  ? 'Success'
-                                  : 'Failed'
-                                : 'Not Pushed'}
-                            </StyledTableCell> */}
+                              {row?.user_name}
+                            </StyledTableCell>
+                            <StyledTableCell
+                              className='!tw-font-bold '
+                              align='center'
+                            >
+                              {row?.remarks}
+                            </StyledTableCell>
                           </StyledTableRow>
                         </>
                       ))}
@@ -1015,7 +1064,9 @@ const Inventory = () => {
           </Card>
         )}
 
-        {inventoryType === 'inventoryIssueLine' && (
+        {/* inventory IssueLine */}
+
+        {inventoryType === 'issue' && (
           <Card className='tw-mx-[7rem] tw-mt-10 tw-rounded-sm tw-bg-white tw-px-10  tw-py-5'>
             <div className='tw-mt-3 tw-flex  tw-justify-between tw-gap-[30%] tw-font-extrabold'>
               <div className='tw-flex tw-flex-col'>
@@ -1032,7 +1083,7 @@ const Inventory = () => {
               </div>
               <div className='tw-flex tw-flex-col tw-items-center tw-justify-end tw-gap-[1rem]'>
                 <RestartAltIcon
-                  id='restart-icon-inventory'
+                  id='restart-icon'
                   fill='black'
                   className='tw-min-h-[4rem]  tw-min-w-[4rem] tw-cursor-pointer'
                   onClick={() => {
@@ -1088,7 +1139,7 @@ const Inventory = () => {
                     setInventoryIssueLineDocNo(e.target.value as number)
                   }
                 >
-                  {inventoryIssueLineDocNoList.map((docNo: any) => (
+                  {inventoryIssueLineDocNoList?.map((docNo: any) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -1100,12 +1151,11 @@ const Inventory = () => {
               <div className=' tw-flex tw-flex-col tw-justify-items-start tw-rounded-lg tw-bg-primary  tw-p-4 tw-text-white'>
                 <div className=' tw-text-2xl'>TOTAL ITEMS</div>
                 <div className='tw-mt-2 tw-text-4xl tw-font-bold'>
-                  {inventoryDataIssueLine.length}
+                  {inventoryData.length}
                 </div>
               </div>
             </div>
             <div style={{ width: '100%' }} className='tw-my-10'>
-              {!loadingInventoryIssueLine && (
                 <TableContainer
                   component={Paper}
                   className='!tw-rounded-2xl tw-text-base'
@@ -1164,16 +1214,16 @@ const Inventory = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody className=' !tw-text-black'>
-                      {inventorySearchedIssueLine.map((row: any) => (
+                      {inventoryData?.map((row: any) => (
                         <>
-                          <StyledTableRow key={row.number}>
+                          <StyledTableRow key={row?.number}>
                             <StyledTableCell
                               className='!tw-flex !tw-justify-center !tw-font-bold !tw-underline'
                               align='center'
                             >
                               <div className='tw-flex-start tw-flex tw-w-full tw-max-w-[150px] tw-items-center'>
                                 <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'>
-                                  {row.item_no}
+                                  {row?.item_no}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -1182,48 +1232,48 @@ const Inventory = () => {
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.number}
-                            </StyledTableCell>
-
-                            <StyledTableCell
-                              className='!tw-font-bold '
-                              align='center'
-                            >
-                              {row.warehouse}
+                              {row?.number}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.warehouse?.[0]?.warehouse_name || ''}
+                              {row?.warehouse}
+                            </StyledTableCell> */}
+
+                            {/* <StyledTableCell
+                              className='!tw-font-bold '
+                              align='center'
+                            >
+                              {row?.warehouse?.[0]?.warehouse_name || ''}
                             </StyledTableCell> */}
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.description}
+                              {row?.description}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.uom_code}
+                              {row?.uom_code}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.quantity}
+                              {row?.quantity}
                             </StyledTableCell>
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.user_name}
+                              {row?.user_name}
                             </StyledTableCell>
                           </StyledTableRow>
                         </>
@@ -1231,11 +1281,11 @@ const Inventory = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              )}
             </div>
           </Card>
         )}
 
+        {/* inventory Return Flow */}
         {inventoryType === 'inventoryReturnFlow' && (
           <Card className='tw-mx-[7rem] tw-mt-10 tw-rounded-sm tw-bg-white tw-px-10  tw-py-5'>
             <div className='tw-mt-3 tw-flex  tw-justify-between tw-gap-[30%] tw-font-extrabold'>
@@ -1253,7 +1303,7 @@ const Inventory = () => {
               </div>
               <div className='tw-flex tw-flex-col tw-items-center tw-justify-end tw-gap-[1rem]'>
                 <RestartAltIcon
-                  id='restart-icon-inventory'
+                  id='restart-icon'
                   fill='black'
                   className='tw-min-h-[4rem]  tw-min-w-[4rem] tw-cursor-pointer'
                   onClick={() => {
@@ -1308,7 +1358,7 @@ const Inventory = () => {
                     setInventoryDataReturnFlowDocNo(e.target.value as number)
                   }
                 >
-                  {inventoryDataReturnFlowDocNoList.map((docNo: any) => (
+                  {inventoryDataReturnFlowDocNoList?.map((docNo: any) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -1384,16 +1434,16 @@ const Inventory = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody className=' !tw-text-black'>
-                      {inventorySearchedReturnFlow.map((row: any) => (
+                      {inventorySearchedReturnFlow?.map((row: any) => (
                         <>
-                          <StyledTableRow key={row.item_no}>
+                          <StyledTableRow key={row?.item_no}>
                             <StyledTableCell
                               className='!tw-flex !tw-justify-center !tw-font-bold !tw-underline'
                               align='center'
                             >
                               <div className='tw-flex-start tw-flex tw-w-full tw-max-w-[150px] tw-items-center'>
                                 <span className='tw-cursor-pointer tw-whitespace-nowrap tw-text-center'>
-                                  {row.item_no}
+                                  {row?.item_no}
                                 </span>
                               </div>
                             </StyledTableCell>
@@ -1402,42 +1452,42 @@ const Inventory = () => {
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.quantity}
+                              {row?.quantity}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.posting_date}
+                              {row?.posting_date}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.warehouse?.[0]?.warehouse_name || ''}
+                              {row?.warehouse?.[0]?.warehouse_name || ''}
                             </StyledTableCell> */}
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.remarks}
+                              {row?.remarks}
                             </StyledTableCell>
 
                             <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.owner}
+                              {row?.owner}
                             </StyledTableCell>
 
                             {/* <StyledTableCell
                               className='!tw-font-bold '
                               align='center'
                             >
-                              {row.serial_numbers}
+                              {row?.serial_numbers}
                             </StyledTableCell> */}
                           </StyledTableRow>
                         </>
@@ -1449,6 +1499,7 @@ const Inventory = () => {
             </div>
           </Card>
         )}
+
       </section>
       <Footer className='tw-mt-10' />
     </>
