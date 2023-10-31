@@ -54,6 +54,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 const Inventory = () => {
+  let base_url:string = 'https://stgrtsapi.clienttech.dev/api/CMMS'
   const [showSnack, setShowSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState('Please select data');
 
@@ -76,41 +77,7 @@ const Inventory = () => {
     string | null
   >(null);
 
-  // useEffect(() => {
-  //   if (inventorySearchParams?.length === 0) {
-  //     setInventorySearched([...inventoryData]);
-
-  //     return;
-  //   }
-
-  //   const searched: Array<any> = [];
-
-  //   inventoryData.forEach((inventory: any) => {
-  //     if (
-  //       inventory.item_no
-  //         .toLowerCase()
-  //         .includes(inventorySearchParams.toLowerCase()) ||
-  //       inventory.item_group
-  //         .toLowerCase()
-  //         .includes(inventorySearchParams.toLowerCase()) ||
-  //       inventory.description
-  //         .toLowerCase()
-  //         .includes(inventorySearchParams.toLowerCase())
-  //     ) {
-  //       searched.push(inventory);
-
-  //       return;
-  //     }
-  //   });
-
-  //   setInventorySearched([...searched]);
-  // }, [inventoryData, inventorySearchParams]);
-
-
-
-  // inventory receive line
-
-  const [inventoryReceiveLineDocNo, setInventoryReceiveLineDocNo] = useState(1);
+ const [inventoryReceiveLineDocNo, setInventoryReceiveLineDocNo] = useState(1);
 
   // const [inventoryDataReceiveLine, setInventoryDataReceiveLine] = useState<any>( [] );
 
@@ -127,7 +94,7 @@ const Inventory = () => {
     inventorySearchParamsReceiveLine,
     setInventorySearchParamsReceiveLine,
   ] = useState<string>('');
-
+  const [inventoryDocNumber, setInventoryDocNumber] = useState<string[]>([]);
   const [inventoryIssueLineDocNo, setInventoryIssueLineDocNo] = useState(1);
 
   const [updateDataInventoryIssueLine, setUpdateDataInventoryIssueLine] =
@@ -240,6 +207,19 @@ const Inventory = () => {
 
   const inventoryCollections = ['receive','issue','return'];
 
+  const ApiCall2 = async ()=>{
+    let DocUrl: string = `${base_url}/get-goods-numbers/${inventoryType}/2023`;
+
+    if(inventoryCollections?.includes(inventoryType)){
+      try {
+        const docResp = await axios.get(DocUrl);
+        setInventoryDocNumber([...docResp?.data?.data])
+      } catch (err) {
+        console.log('err', err)
+      }
+    }
+  }
+
 const ApiCall = async () => {
   let url;
 if (inventoryType === 'receive') {
@@ -294,7 +274,10 @@ else{
   }
   
 }
-
+console.log('inventoryIssueLineDocNo', inventoryIssueLineDocNo)
+useEffect(() => {
+  ApiCall();
+}, [inventoryReceiveLineDocNo]);
 
 useEffect(() => {
   const iconElement = document.getElementById('restart-icon');
@@ -306,11 +289,12 @@ useEffect(() => {
     }, 1000);
   }
   ApiCall()
+  ApiCall2()
     // setLoadingInventory(false);
 }, [updateDataInventory, showSyncingInventory,inventoryType]);
 
 console.log('inventoryData', inventoryData)
-console.log('inventoryDetailsModalNo', inventoryDetailsModalNo)
+console.log('inventoryDocNumber', inventoryDocNumber)
   return (
     <>
       <Header />
@@ -688,7 +672,7 @@ console.log('inventoryDetailsModalNo', inventoryDetailsModalNo)
                     setInventoryReceiveLineDocNo(e.target.value as number)
                   }
                 >
-                  {[1]?.map(docNo => (
+                  {inventoryDocNumber?.map((docNo: string) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -903,7 +887,7 @@ console.log('inventoryDetailsModalNo', inventoryDetailsModalNo)
                     setInventoryIssueLineDocNo(e.target.value as number)
                   }
                 >
-                  {[1]?.map((docNo: any) => (
+                  {inventoryDocNumber?.map((docNo: string) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
@@ -1124,7 +1108,7 @@ console.log('inventoryDetailsModalNo', inventoryDetailsModalNo)
                     setInventoryDataReturnFlowDocNo(e.target.value as number)
                   }
                 >
-                  {[1]?.map((docNo: any) => (
+                  {inventoryDocNumber?.map((docNo: string) => (
                     <MenuItem key={docNo} value={docNo}>
                       {docNo}
                     </MenuItem>
