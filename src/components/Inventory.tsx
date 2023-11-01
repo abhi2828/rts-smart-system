@@ -77,7 +77,7 @@ const Inventory = () => {
     string | null
   >(null);
 
- const [inventoryReceiveLineDocNo, setInventoryReceiveLineDocNo] = useState(1);
+ const [inventoryLineDocNo, setInventoryLineDocNo] = useState<string>('1');
 
   // const [inventoryDataReceiveLine, setInventoryDataReceiveLine] = useState<any>( [] );
 
@@ -223,13 +223,13 @@ const Inventory = () => {
 const ApiCall = async () => {
   let url;
 if (inventoryType === 'receive') {
-  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryReceiveLineDocNo}`;
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-receive-line/${inventoryLineDocNo}`;
 }
 else if (inventoryType === 'issue') {
-  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/${inventoryReceiveLineDocNo}`
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-issue-line/${inventoryLineDocNo}`
 }
 else if (inventoryType === 'return') {
-  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/${inventoryReceiveLineDocNo}`
+  url = `https://stgrtsapi.clienttech.dev/api/CMMS/get-inventory-return-flow/${inventoryLineDocNo}`
 }
 else{
   url = 'https://stgrtsapi.clienttech.dev/api/CMMS/get-inventories/' + new Date().getFullYear();
@@ -274,10 +274,9 @@ else{
   }
   
 }
-console.log('inventoryIssueLineDocNo', inventoryIssueLineDocNo)
 useEffect(() => {
   ApiCall();
-}, [inventoryReceiveLineDocNo]);
+}, [inventoryLineDocNo]);
 
 useEffect(() => {
   const iconElement = document.getElementById('restart-icon');
@@ -290,11 +289,12 @@ useEffect(() => {
   }
   ApiCall()
   ApiCall2()
-    // setLoadingInventory(false);
-}, [updateDataInventory, showSyncingInventory,inventoryType]);
+}, [updateDataInventory, showSyncingInventory,inventoryType,inventoryLineDocNo]);
 
-console.log('inventoryData', inventoryData)
+console.log('inventoryType', inventoryType)
 console.log('inventoryDocNumber', inventoryDocNumber)
+console.log('inventoryLineDocNo', typeof inventoryLineDocNo ,inventoryLineDocNo)
+console.log('inventoryData', inventoryData)
   return (
     <>
       <Header />
@@ -667,9 +667,9 @@ console.log('inventoryDocNumber', inventoryDocNumber)
                 <label className='tw-mb-2 tw-text-xs '>Doc No</label>
                 <Select
                   className='!tw-bg-white !tw-text-black'
-                  value={inventoryReceiveLineDocNo}
+                  value={inventoryLineDocNo}
                   onChange={e =>
-                    setInventoryReceiveLineDocNo(e.target.value as number)
+                    setInventoryLineDocNo(e.target.value as string)
                   }
                 >
                   {inventoryDocNumber?.map((docNo: string) => (
@@ -882,9 +882,9 @@ console.log('inventoryDocNumber', inventoryDocNumber)
                 <Select
                   id='demo-simple-select'
                   className='!tw-bg-white !tw-text-black'
-                  value={inventoryIssueLineDocNo}
+                  value={inventoryLineDocNo}
                   onChange={e =>
-                    setInventoryIssueLineDocNo(e.target.value as number)
+                    setInventoryLineDocNo(()=>e.target.value as string)
                   }
                 >
                   {inventoryDocNumber?.map((docNo: string) => (
@@ -1103,9 +1103,9 @@ console.log('inventoryDocNumber', inventoryDocNumber)
                 <label className='tw-mb-2 tw-text-xs '>Doc No</label>
                 <Select
                   className='!tw-bg-white !tw-text-black'
-                  value={inventoryDataReturnFlowDocNo}
+                  value={inventoryLineDocNo}
                   onChange={e =>
-                    setInventoryDataReturnFlowDocNo(e.target.value as number)
+                    setInventoryLineDocNo(e.target.value as string)
                   }
                 >
                   {inventoryDocNumber?.map((docNo: string) => (
