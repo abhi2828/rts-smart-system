@@ -95,7 +95,6 @@ const Inventory = () => {
     setInventorySearchParamsReceiveLine,
   ] = useState<string>('');
   const [inventoryDocNumber, setInventoryDocNumber] = useState<string[]>([]);
-  const [inventoryIssueLineDocNo, setInventoryIssueLineDocNo] = useState(1);
 
   const [updateDataInventoryIssueLine, setUpdateDataInventoryIssueLine] =
     useState(false);
@@ -105,8 +104,6 @@ const Inventory = () => {
   const [inventorySearchParamsIssueLine, setInventorySearchParamsIssueLine] =
     useState<string>('');
 
-  const [inventoryDataReturnFlowDocNo, setInventoryDataReturnFlowDocNo] =
-    useState(1);
 
   const [updateDataInventoryReturnFlow, setUpdateDataInventoryReturnFlow] =
     useState(false);
