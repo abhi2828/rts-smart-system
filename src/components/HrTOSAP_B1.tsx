@@ -145,9 +145,9 @@ const HrTOSAP_B1 = () => {
 
   const [showSyncingVendor, setShowSyncingVendor] = useState(false);
 
-  const [syncedDataSapToSesami, setSyncedDataSapToSesami] = useState<any>(
-    JSON.parse(localStorage.getItem('syncedDataSapToSesami') || `{}`)
-  );
+  // const [syncedDataSapToSesami, setSyncedDataSapToSesami] = useState<any>(
+  //   JSON.parse(localStorage.getItem('syncedDataSapToSesami') || `{}`)
+  // );
 
   const x = isPushedVendor;
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -601,126 +601,126 @@ const HrTOSAP_B1 = () => {
     setDropdownOpen(id);
   };
 
-  async function postBudgets() {
-    if (Object.keys(rowChecked).length === 0) {
-      setSnackMessage('Please select data');
-      setShowSnack(true);
+  // async function postBudgets() {
+  //   if (Object.keys(rowChecked).length === 0) {
+  //     setSnackMessage('Please select data');
+  //     setShowSnack(true);
 
-      return;
-    }
+  //     return;
+  //   }
 
-    Object.keys(rowChecked).forEach(async gl_code => {
-      try {
-        // already synced sesasmi data, now not removing it and pushing it on req
-        // if (syncedDataSapToSesami[gl_code]?.pushed === true) {
-        //   return;
-        // }
+  //   Object.keys(rowChecked).forEach(async gl_code => {
+  //     try {
+  //       // already synced sesasmi data, now not removing it and pushing it on req
+  //       // if (syncedDataSapToSesami[gl_code]?.pushed === true) {
+  //       //   return;
+  //       // }
 
-        const postUrl = 'https://ssmrts.sesami.online/API/postbudget';
+  //       const postUrl = 'https://ssmrts.sesami.online/API/postbudget';
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
-        const costCentersData = costCenters[gl_code];
+  //       const costCentersData = costCenters[gl_code];
 
-        if (costCenters) {
-          for (const costCenter of costCentersData!) {
-            const glInfo: any = sapb1ToSesamiSearched.find(
-              (gl: any) => gl.gl_code === gl_code
-            );
-            const postData = {
-              GLCode: glInfo.gl_code,
-              CostCenterCode: (costCenter.cost_center_code as string) || '',
-              GLDescription: glInfo.description,
-              CostCenterDescription: costCenter.cost_center || '',
-              BudgetAmount: costCenter.amount,
-              Dimension: glInfo.dimension,
-            };
+  //       if (costCenters) {
+  //         for (const costCenter of costCentersData!) {
+  //           const glInfo: any = sapb1ToSesamiSearched.find(
+  //             (gl: any) => gl.gl_code === gl_code
+  //           );
+  //           const postData = {
+  //             GLCode: glInfo.gl_code,
+  //             CostCenterCode: (costCenter.cost_center_code as string) || '',
+  //             GLDescription: glInfo.description,
+  //             CostCenterDescription: costCenter.cost_center || '',
+  //             BudgetAmount: costCenter.amount,
+  //             Dimension: glInfo.dimension,
+  //           };
 
-            try {
-              const res = await axios.post(postUrl, postData, {
-                headers: {
-                  'ngrok-skip-browser-warning': '69420',
-                  Authorization: 'Basic F3E7DB5C-D57C-4103-8B46-99AF3E8267CE',
-                  SourceSystemID: 'SESAMi-RTS-API',
-                },
-              });
-              console.log(
-                `Budget posted for GL code ${glInfo.gl_code}, Cost Center ${costCenter}`
-              );
+  //           try {
+  //             const res = await axios.post(postUrl, postData, {
+  //               headers: {
+  //                 'ngrok-skip-browser-warning': '69420',
+  //                 Authorization: 'Basic F3E7DB5C-D57C-4103-8B46-99AF3E8267CE',
+  //                 SourceSystemID: 'SESAMi-RTS-API',
+  //               },
+  //             });
+  //             console.log(
+  //               `Budget posted for GL code ${glInfo.gl_code}, Cost Center ${costCenter}`
+  //             );
 
-              if (res.data.Succeed === false) {
-                throw new Error('Failed');
-              }
-              setSyncedDataSapToSesami((prev: any) => ({
-                ...prev,
-                [sapb1ToSesamiSearched.find((gl: any) => gl.gl_code === gl_code)
-                  .gl_code]: {
-                  pushed: true,
-                  time: Date.now(),
-                },
-              }));
+  //             if (res.data.Succeed === false) {
+  //               throw new Error('Failed');
+  //             }
+  //             setSyncedDataSapToSesami((prev: any) => ({
+  //               ...prev,
+  //               [sapb1ToSesamiSearched.find((gl: any) => gl.gl_code === gl_code)
+  //                 .gl_code]: {
+  //                 pushed: true,
+  //                 time: Date.now(),
+  //               },
+  //             }));
 
-              setRowChecked(rowPrevChecked => {
-                const rowCheckedInfo = rowPrevChecked;
-                delete rowCheckedInfo[
-                  sapb1ToSesamiSearched.find(
-                    (gl: any) => gl.gl_code === gl_code
-                  ).gl_code
-                ];
+  //             setRowChecked(rowPrevChecked => {
+  //               const rowCheckedInfo = rowPrevChecked;
+  //               delete rowCheckedInfo[
+  //                 sapb1ToSesamiSearched.find(
+  //                   (gl: any) => gl.gl_code === gl_code
+  //                 ).gl_code
+  //               ];
 
-                return { ...rowCheckedInfo };
-              });
-            } catch (error) {
-              setSyncedDataSapToSesami((prev: any) => ({
-                ...prev,
-                [sapb1ToSesamiSearched.find((gl: any) => gl.gl_code === gl_code)
-                  .gl_code]: {
-                  pushed: false,
-                  time: Date.now(),
-                },
-              }));
-              console.error(
-                `Failed to post budget for GL code ${
-                  sapb1ToSesamiSearched.find(
-                    (gl: any) => gl.gl_code === gl_code
-                  ).gl_code
-                }, Cost Center ${costCenter}`
-              );
-            }
-          }
-        }
-      } catch (error) {
-        console.error(`Failed to fetch budgets for GL code ${gl_code}`);
-      }
-    });
-  }
+  //               return { ...rowCheckedInfo };
+  //             });
+  //           } catch (error) {
+  //             setSyncedDataSapToSesami((prev: any) => ({
+  //               ...prev,
+  //               [sapb1ToSesamiSearched.find((gl: any) => gl.gl_code === gl_code)
+  //                 .gl_code]: {
+  //                 pushed: false,
+  //                 time: Date.now(),
+  //               },
+  //             }));
+  //             console.error(
+  //               `Failed to post budget for GL code ${
+  //                 sapb1ToSesamiSearched.find(
+  //                   (gl: any) => gl.gl_code === gl_code
+  //                 ).gl_code
+  //               }, Cost Center ${costCenter}`
+  //             );
+  //           }
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error(`Failed to fetch budgets for GL code ${gl_code}`);
+  //     }
+  //   });
+  // }
 
-  const twentyFourHoursInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  // const twentyFourHoursInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-  const currentTime = new Date().getTime();
+  // const currentTime = new Date().getTime();
 
-  const totalBudgetSyncedToday = Object.keys(syncedDataSapToSesami).filter(
-    syncedId =>
-      syncedDataSapToSesami[syncedId].pushed === true &&
-      currentTime - syncedDataSapToSesami[syncedId].time <=
-        twentyFourHoursInMillis
-  ).length;
+  // const totalBudgetSyncedToday = Object.keys(syncedDataSapToSesami).filter(
+  //   syncedId =>
+  //     syncedDataSapToSesami[syncedId].pushed === true &&
+  //     currentTime - syncedDataSapToSesami[syncedId].time <=
+  //       twentyFourHoursInMillis
+  // ).length;
 
   let totalBudgetCostSyncedToday = 0;
 
-  if (sapb1ToSesami.length > 0) {
-    Object.keys(syncedDataSapToSesami).forEach((glSynced: any) => {
-      if (
-        syncedDataSapToSesami[glSynced]?.pushed === true &&
-        currentTime - syncedDataSapToSesami[glSynced].time <=
-          twentyFourHoursInMillis
-      ) {
-        totalBudgetCostSyncedToday += parseFloat(
-          sapb1ToSesami.find((gl: any) => gl.gl_code === glSynced).amount
-        );
-      }
-    });
-  }
+  // if (sapb1ToSesami.length > 0) {
+  //   Object.keys(syncedDataSapToSesami).forEach((glSynced: any) => {
+  //     if (
+  //       syncedDataSapToSesami[glSynced]?.pushed === true &&
+  //       currentTime - syncedDataSapToSesami[glSynced].time <=
+  //         twentyFourHoursInMillis
+  //     ) {
+  //       totalBudgetCostSyncedToday += parseFloat(
+  //         sapb1ToSesami.find((gl: any) => gl.gl_code === glSynced).amount
+  //       );
+  //     }
+  //   });
+  // }
 
   totalBudgetCostSyncedToday = Number(totalBudgetCostSyncedToday.toString());
 
@@ -770,9 +770,9 @@ const HrTOSAP_B1 = () => {
         return;
       }
 
-      if (syncedDataSapToSesami[glRow.gl_code]?.pushed === true) {
-        return;
-      }
+      // if (syncedDataSapToSesami[glRow.gl_code]?.pushed === true) {
+      //   return;
+      // }
 
       areAllRowsChecked = false;
     });
@@ -880,13 +880,13 @@ const HrTOSAP_B1 = () => {
     }
   };
 
-  useEffect(() => {
-    // localStorage.setItem('rowCheckedSapToSesami', JSON.stringify(rowChecked));
-    localStorage.setItem(
-      'syncedDataSapToSesami',
-      JSON.stringify(syncedDataSapToSesami)
-    );
-  }, [syncedDataSapToSesami]);
+  // useEffect(() => {
+  //   // localStorage.setItem('rowCheckedSapToSesami', JSON.stringify(rowChecked));
+  //   localStorage.setItem(
+  //     'syncedDataSapToSesami',
+  //     JSON.stringify(syncedDataSapToSesami)
+  //   );
+  // }, [syncedDataSapToSesami]);
 
   useEffect(() => {
     // localStorage.setItem('rowCheckedReq', JSON.stringify(rowCheckedReq));
@@ -1160,6 +1160,81 @@ const HrTOSAP_B1 = () => {
                             </div>
                           </StyledTableCell>
                           <StyledTableCell
+                            className='!tw-relative !tw-cursor-pointer !tw-font-bold'
+                            align='left'
+                            onClick={
+                              costCenters[row.gl_code] !== undefined &&
+                              costCenters[row.gl_code] !== null
+                                ? () => openDropdown(row.gl_code)
+                                : () => {}
+                            }
+                          >
+                            <div className='tw-flex tw-items-center tw-justify-center'>
+                              <div className='tw-flex tw-w-full  tw-max-w-[140px] tw-items-center tw-justify-start'>
+                                {costCenters[row.gl_code] !== undefined ? (
+                                  <>
+                                    {row.amount}
+                                    {costCenters[row.gl_code] !== null ? (
+                                      <ArrowDropDownIcon className='tw-cursor-pointer' />
+                                    ) : null}
+                                    {dropdownOpen === row.gl_code &&
+                                      index !== sapb1ToSesami.length - 1 && (
+                                        <TableContainer
+                                          component={Paper}
+                                          className='!tw-absolute !tw-right-[-120px] !tw-top-[30%] !tw-z-20 !tw-ml-5 !tw-max-w-[300px] !tw-rounded-lg tw-text-base'
+                                        >
+                                          <Table aria-label='customized table'>
+                                            <TableHead>
+                                              <TableRow>
+                                                <StyledTableCell align='center'>
+                                                  COST CENTRE
+                                                </StyledTableCell>
+                                                <StyledTableCell align='center'>
+                                                  AMOUNT
+                                                </StyledTableCell>
+                                              </TableRow>
+                                            </TableHead>
+                                            <TableBody className=' !tw-text-black'>
+                                              {costCenters[row.gl_code]!.map(
+                                                row1 => (
+                                                  <StyledTableRow
+                                                    key={row1.cost_center}
+                                                  >
+                                                    <StyledTableCell
+                                                      component='th'
+                                                      scope='row'
+                                                      className='!tw-font-bold'
+                                                    >
+                                                      {row1.cost_center}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell
+                                                      component='th'
+                                                      scope='row'
+                                                      className='!tw-font-bold'
+                                                    >
+                                                      {row1.amount}
+                                                    </StyledTableCell>
+                                                  </StyledTableRow>
+                                                )
+                                              )}
+                                            </TableBody>
+                                          </Table>
+                                        </TableContainer>
+                                      )}
+                                  </>
+                                ) : (
+                                  <div className='tw-flex tw-max-h-[30px] tw-max-w-[30px] tw-items-center tw-justify-center'>
+                                    {costCenters[row.gl_code] !== null ? (
+                                      <CircularProgress />
+                                    ) : (
+                                      '-'
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </StyledTableCell>
+                          {/* <StyledTableCell
                             className='!tw-font-bold '
                             align='center'
                           >
@@ -1170,7 +1245,7 @@ const HrTOSAP_B1 = () => {
                                 ? 'Success'
                                 : 'Failed'
                               : 'Not Pushed'}
-                          </StyledTableCell>
+                          </StyledTableCell> */}
                         </StyledTableRow>
                       </>
                     ))}
