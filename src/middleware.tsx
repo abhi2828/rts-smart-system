@@ -17,7 +17,8 @@ const pathsToIgnore = [
   '/app',
   '/eprocurement',
   '/cmms',
-  '/inventory'
+  '/inventory',
+  '/hr_to_sap_b1'
 ];
 
 const ignorePathsFromAuthGuard = new RegExp(pathsToIgnore.join('|'));
@@ -49,7 +50,6 @@ export default async function middleware(req: NextRequest) {
         if (ignorePathsFromAuthGuard.test(req.nextUrl.pathname)) {
           return true;
         }
-
         return !!user;
       },
     },
